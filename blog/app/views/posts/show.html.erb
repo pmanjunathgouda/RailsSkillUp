@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Posts List</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<h1>Here Comes your Recent post</h1>
+			<div class="row">
+			    <div class="form-group">
+			  		<h3>Title:</h3>
+			  		<%= @posts.title %>
+				</div>
+			</div>
+			<div class="row">
+			    <div class="form-group">
+			  		<h3>Description:</h3>
+			  		<%= @posts.description %>
+			  	</div>
+			</div>
+			<h2>Comments</h2>
+			<div class="panel panel-default"  style="width: 500px;">
+				<% @posts.comments.each do |comment| %>
+	    		<div class="panel-heading">Commented by:
+	    			<%= comment.commenter %>
+	 				</div>
+	    		<div class="panel-body">Comment:
+	    			<%= comment.body %>
+	  			</div>
+	  			<p>
+	  				<% if (user_signed_in? && current_user.admin? ) %>
+  						<%= link_to 'Remove', [comment.post, comment],
+               method: :delete,
+               data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            <% end %>
+					</p>
+				<% end %>
+			</div>
+			<div class="well">
+			<h2>Add a comment:</h2>
+			<%= form_with(model: [ @posts, @posts.comments.build ], local: true) do |form| %>
+  			<div class="row">
+    			<div class="form-group">
+				    <%= form.label :user %><br>
+				    <%= form.text_field :commenter, class: "form-control" %>
+  				</div>
+  			</div>
+  			<div class="row">
+          <div class="form-group">
+    				<%= form.label :comment %><br>
+    				<%= form.text_area :body, class: "form-control text-field" %>
+				  </div>
+				</div>
+  			<div class="row">
+          <div class="form-group">
+            <button type="submit" value="Submit" class="btn btn-success">Post</button>
+          </div>
+        </div>
+			<% end %>
+		</div>
+			<div class="row">
+			    <div class="form-group">
+					<% if (user_signed_in? && (current_user.id == @posts.user_id)) %>
+						<%= button_to "Edit", edit_post_path(@posts),:class => "btn btn-warning", :method => :get %>
+					<% end %>
+				</div>
+			</div>
+			<div class="row">
+		    <div class="form-group">
+					<%= button_to "Back", posts_path, :class => "btn btn-primary", :method => :get %>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Posts List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Edit Posts</h1>
+      <%= form_with(model: @posts, local: true) do |form| %>
+        <% if @posts.errors.any? %>
+          <div id="error_explanation">
+            <h2>
+              <%= pluralize(@posts.errors.count, "error") %> prohibited
+              this Post from being saved:
+            </h2>
+            <ul>
+              <% @posts.errors.full_messages.each do |msg| %>
+                <li><%= msg %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        <div class="row">
+          <div class="form-group">
+            <%= form.label :title %><br>
+            <%= form.text_field :title, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <%= form.label :description %><br>
+            <%= form.text_area :description, class: "form-control" %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <%= form.file_field :attachment %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group">
+            <button type="submit" value="Submit" class="btn btn-success">Update</button>
+          </div>
+        </div>
+      <% end %>
+      <div class="row">
+        <div class="form-group">
+          <%= button_to "Back", posts_path,
+            :class => "btn btn-primary", :method => :get, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
